@@ -76,12 +76,14 @@ A fileok kiszolgálásához kell egy web szerver, mi most Apache-ot használunk.
 >     sudo systemctl enable apache2
 >     sudo a2enmod proxy proxy_http headers proxy_wstunnel
 >     sudo nano /etc/apache2/sites-available/openmaptiles.conf
->     # példa: [openmaptiles.conf](https://github.com/rhevesi/map-hosting-setup-hu/blob/main/apache/openmaptiles.conf)
 >     sudo a2ensite openmaptiles.conf
 >     sudo apt install certbot
 >     sudo apt install python3-certbot-apache
 >     sudo certbot --apache --agree-tos --redirect --hsts --staple-ocsp --uir --email you@example.com -d osm.example.com
 >     sudo systemctl restart apache2
+
+Példa fileok: 
++ [openmaptiles.conf](https://github.com/rhevesi/map-hosting-setup-hu/blob/main/apache/openmaptiles.conf)
 
 ## Weboldal
 
@@ -98,10 +100,12 @@ Létre kell hozni egy könyvtárat ahol a html és a térkép fileok lesznek, id
 >     sudo ln -sf 'KlokanTech Noto Sans Regular' fonts/Regular
 >     # a json file neve meg kell egyezzen a könyvtár nevével az astrid-gunther leírás szerint (nem próbáltam más névvel)
 >     sudo nano hungary-nozip.json
->     # példa: [openmaptiles.conf](https://github.com/rhevesi/map-hosting-setup-hu/blob/main/www/hungary-nozip.json)
 >     sudo nano index.html
->     # példa: [openmaptiles.conf](https://github.com/rhevesi/map-hosting-setup-hu/blob/main/www/index.html)
 >     sudo chown -R www-data /var/www/tileserver
+
+Példa fileok: 
++ [hungary-nozip.json](https://github.com/rhevesi/map-hosting-setup-hu/blob/main/www/hungary-nozip.json)
++ [index.html](https://github.com/rhevesi/map-hosting-setup-hu/blob/main/www/index.html)
 
 Ami fontos a hungary-nozip.json-ben:
 + A metadata.json elérési útja relatív az index.html-hez
@@ -113,9 +117,9 @@ Ami fontos a hungary-nozip.json-ben:
 >     },
 
 + Az index.html-ben a script részben a style, center és zoom argumentumokat kell jól beállítani
-++ A style-ban állítható a json file elérési útja
-++ A center a térkép közepe, ennek meghatározásához jól jön a leírás elején található bounding box számoló oldal
-++ A zoom a kívánt zoom szint
+    + A style-ban állítható a json file elérési útja
+    + A center a térkép közepe, ennek meghatározásához jól jön a leírás elején található bounding box számoló oldal
+    + A zoom a kívánt zoom szint
 >     <script>
 >     	var map = new maplibregl.Map({
 >     		container: 'map',
