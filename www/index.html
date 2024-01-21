@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Display a map on a webpage</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable
+=no" />
+    <script src='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js'></script>
+    <link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
+</head>
+
+<body>
+    <img src="https://holkerekparozzak.hu/templates/hk2.0/images/bckg_header_winter.jpg"/>
+    <div id='map' style='width: 1200px; height: 800px;'></div>
+    <script>
+        var map = new maplibregl.Map({
+            container: 'map',
+            style: 'hungary-nozip.json',
+            center: [18, 46],
+            zoom: 4
+        });
+        map.addControl(new maplibregl.NavigationControl());
+    </script>
+</body>
+
+</html>
