@@ -9,11 +9,14 @@ Itt megpróbálom leírni a hostinghoz szükséges lényeges pontokat, kitérve 
 # Térképek letöltése
 
 A térképek letölthetőek innen: http://download.geofabrik.de/
+
 Bounding box számításra szükség lesz ha csak egy saját területet akarsz megjeleníteni, egyébként nem kell: https://boundingbox.klokantech.com/
+
 Alul a CSV formátumot érdemes választani.
+
 Egy másik hasonló oldal: https://tools.geofabrik.de/calc/#type=geofabrik_standard&bbox=15.843,45.6407,23.0665,48.7777&tab=1&proj=EPSG:4326&places=2
-Én ezt nem csináltam meg, a teljes Magyarország térképet használtam.
-Ha erre szükség van, akkor használni kell az osmium parancsot is.
+
+Én ezt nem csináltam meg, a teljes Magyarország térképet használtam. Ha erre szükség van, akkor használni kell az osmium parancsot is.
 
 >     sudo apt-get install osmium-tool
 >     osmium extract --bbox=6.1173598760,48.9662745077,8.5084754437,50.9404435711 --set-bounds --strategy=smart europe-latest.osm.pbf  --output rlp.osm.pbf
@@ -35,6 +38,7 @@ Installálás:
 >     sudo make install
 
 Az eredeti leírás coastline-okat is használ, én ezt nem használtam mivel csak Magyarország térképpel próbáltam. Teljes Európa térkép generálásához kellenek a coastlineok az eredeti leírás alapján.
+
 Ha erre szükség van, akkor a tilemaker használata előtt le kell tölteni a coastlineokat a tilemaker könyvtárban állva:
 
 >     wget https://osmdata.openstreetmap.de/download/water-polygons-split-4326.zip
@@ -53,7 +57,8 @@ Használat:
 
 >     ./tilemaker --input $HOME/tile/hungary-latest.osm.pbf --output $HOME/tile/tilemaker/hungary-nozip --process $HOME/tile/tilemaker/resources/process-openmaptiles.lua --config $HOME/tile/tilemaker/resources/config-openmaptiles.json &> $HOME/tile/tilemaker-hungary-nozip.log &
 
-Az eredmény a $HOME/tile/tilemaker/hungary-nozip könyvtárban lesz. Ha az outputnak .mbtiles kiterjesztést adunk, akkor könyvtárstruktúra helyett SQLite adatbázist generál egy fileba. Ezt nem próbáltam, a könyvtártsruktúra levileg gyrosabb.
+Az eredmény a $HOME/tile/tilemaker/hungary-nozip könyvtárban lesz. Ha az outputnak .mbtiles kiterjesztést adunk, akkor könyvtárstruktúra helyett SQLite adatbázist generál egy fileba. Ezt nem próbáltam, a könyvtártsruktúra elvileg gyorsabb.
+
 Itt fontos, hogy meg kell nyitni a metadata.json-t ($HOME/tile/tilemaker/hungary-nozip/metadata.json-t), és átírni az URL-t a "tiles" elem alatt. A fileok statikus fileokként lesznek kiszolgálva, olyan URL-t kell ideírni ahol elérhetőek lesznek.
 
 >     "tiles":["http://osm.example.com/hungary-nozip/{z}/{x}/{y}.pbf"]
@@ -71,9 +76,7 @@ A fileok kiszolgálásához kell egy web szerver, mi most Apache-ot használunk.
 >     sudo systemctl enable apache2
 >     sudo a2enmod proxy proxy_http headers proxy_wstunnel
 >     sudo nano /etc/apache2/sites-available/openmaptiles.conf
-
-TODO link apache/openmaptiles.conf
-
+>     # példa: [openmaptiles.conf](https://github.com/rhevesi/map-hosting-setup-hu/blob/main/apache/openmaptiles.conf)
 >     sudo a2ensite openmaptiles.conf
 >     sudo apt install certbot
 >     sudo apt install python3-certbot-apache
@@ -95,9 +98,9 @@ Létre kell hozni egy könyvtárat ahol a html és a térkép fileok lesznek, id
 >     sudo ln -sf 'KlokanTech Noto Sans Regular' fonts/Regular
 >     # a json file neve meg kell egyezzen a könyvtár nevével az astrid-gunther leírás szerint (nem próbáltam más névvel)
 >     sudo nano hungary-nozip.json
-TODO link www/hungary-nozip.json
+>     # példa: [openmaptiles.conf](https://github.com/rhevesi/map-hosting-setup-hu/blob/main/www/hungary-nozip.json)
 >     sudo nano index.html
-TODO link www/index.html
+>     # példa: [openmaptiles.conf](https://github.com/rhevesi/map-hosting-setup-hu/blob/main/www/index.html)
 >     sudo chown -R www-data /var/www/tileserver
 
 Ami fontos a hungary-nozip.json-ben:
